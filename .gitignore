@@ -1,0 +1,16 @@
+bin/
+*.exe
+*.exe~
+*.dill
+*.so
+*.dylib
+
+# Test binary, with `go test -c`
+*.test
+
+.env
+
+.vscode/
+.idea/
+
+uploads/
