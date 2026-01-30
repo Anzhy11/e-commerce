@@ -21,13 +21,13 @@ dev:
 	go run ./cmd/api
 
 lint:
-	golangci-lint run ./..
+	golangci-lint run ./...
 
 migrate-up:
-	migrate -path db/migrations -database "postgresql://postgres:password@localhost:5432/ecommerce_shop?sslmode=disabled" up
+	migrate -path db/migrations -database "postgresql://postgres:password@localhost:5432/ecommerce_shop?sslmode=disable" up
 
 migrate-down:
-	migrate -path db/migrations -database "postgresql://postgres:password@localhost:5432/ecommerce_shop?sslmode=disabled" down
+	migrate -path db/migrations -database "postgresql://postgres:password@localhost:5432/ecommerce_shop?sslmode=disable" down
 
 docker-up:
 	docker-compose -f dockerfile/docker-compose.yml up -d

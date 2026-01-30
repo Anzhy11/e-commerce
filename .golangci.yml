@@ -1,0 +1,49 @@
+version: 2
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - revive
+    - misspell
+    - gocritic
+    - whitespace
+    # - bodyclose
+    - errorlint
+    - nilerr
+    # - prealloc
+    # - makezero
+
+  settings:
+    govet:
+      enable-all: true
+    
+    errcheck:
+      check-type-assertions: true
+      check-type-conversions: true
+
+    gocritic:
+      enabled-tags:
+        - performance
+        - style
+        - opinionated
+        - diagnostic
+        - experimental
+    revive:
+      rules:
+        - name: exported
+          severity: warning
+          disabled: false
+          exclude: [""]
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
