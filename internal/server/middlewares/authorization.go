@@ -1,8 +1,10 @@
 package middlewares
 
 import (
+	"slices"
 	"strings"
 
+	"github.com/anzhy11/go-e-commerce/internal/models"
 	"github.com/anzhy11/go-e-commerce/internal/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -35,5 +37,43 @@ func (s *Middlewares) Authorization() gin.HandlerFunc {
 		c.Set("email", payload.Email)
 		c.Set("role", payload.Role)
 		c.Next()
+	}
+}
+
+func (s *Middlewares) AdminAuthorization() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role := c.GetString("role")
+		if role == "" {
+			utils.Forbidden(c, "Forbidden")
+			c.Abort()
+			return
+		}
+
+		if role != string(models.RoleAdmin) {
+			utils.Forbidden(c, "Forbidden")
+			c.Abort()
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func (s *Middlewares) RoleAuthorization(roles ...string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role := c.GetString("role")
+		if role == "" {
+			utils.Forbidden(c, "Forbidden")
+			c.Abort()
+			return
+		}
+
+		if slices.Contains(roles, role) {
+			c.Next()
+			return
+		}
+
+		utils.Forbidden(c, "Forbidden")
+		c.Abort()
 	}
 }
