@@ -66,26 +66,26 @@ func ErrorResponse(c *gin.Context, statusCode int, message string, err error) {
 }
 
 // Common error responses
-func BadRequest(c *gin.Context, message string, err error) {
-	ErrorResponse(c, http.StatusBadRequest, message, err)
+func BadRequest(c *gin.Context, message string) {
+	ErrorResponse(c, http.StatusBadRequest, message, nil)
 }
 
-func Unauthorized(c *gin.Context, message string, err error) {
-	ErrorResponse(c, http.StatusUnauthorized, message, err)
+func Unauthorized(c *gin.Context, message string) {
+	ErrorResponse(c, http.StatusUnauthorized, message, nil)
 }
 
-func Forbidden(c *gin.Context, message string, err error) {
-	ErrorResponse(c, http.StatusForbidden, message, err)
+func Forbidden(c *gin.Context, message string) {
+	ErrorResponse(c, http.StatusForbidden, message, nil)
 }
 
-func NotFound(c *gin.Context, message string, err error) {
-	ErrorResponse(c, http.StatusNotFound, message, err)
+func NotFound(c *gin.Context, message string) {
+	ErrorResponse(c, http.StatusNotFound, message, nil)
 }
 
-func InternalServerError(c *gin.Context, message string, err error) {
-	ErrorResponse(c, http.StatusInternalServerError, message, err)
+func InternalServerError(c *gin.Context, message string) {
+	ErrorResponse(c, http.StatusInternalServerError, message, nil)
 }
 
-func ServiceUnavailable(c *gin.Context, message string, err error) {
-	ErrorResponse(c, http.StatusServiceUnavailable, message, err)
+func ServiceUnavailable(c *gin.Context, message string) {
+	ErrorResponse(c, http.StatusServiceUnavailable, message, nil)
 }
