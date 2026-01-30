@@ -8,9 +8,29 @@ bin/
 # Test binary, with `go test -c`
 *.test
 
+# env
 .env
 
-.vscode/
-.idea/
+# Go workspace
+*.work
+*.worksum
 
+# db
+.db
+.sqlite
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# uploads
 uploads/
+
+# vendor
+vendor/
