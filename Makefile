@@ -21,7 +21,11 @@ dev:
 	go run ./cmd/api
 
 lint:
+	$(MAKE) format
 	golangci-lint run ./...
+
+format:
+	gofmt -w .
 
 migrate-up:
 	migrate -path db/migrations -database "postgresql://postgres:password@localhost:5432/ecommerce_shop?sslmode=disable" up

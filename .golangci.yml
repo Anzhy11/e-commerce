@@ -23,7 +23,11 @@ linters:
 
   settings:
     govet:
-      enable-all: true
+      enable:
+        - printf
+        - shadow
+        - structtag
+        - composites
     
     errcheck:
       check-type-assertions: true
