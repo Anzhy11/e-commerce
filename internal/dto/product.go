@@ -12,7 +12,7 @@ type UpdateCategoryRequest struct {
 }
 
 type CategoryResponse struct {
-	ID          string `json:"id"`
+	ID          uint   `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	IsActive    bool   `json:"is_active"`
@@ -21,7 +21,7 @@ type CategoryResponse struct {
 
 type CreateProductRequest struct {
 	Name        string  `json:"name" binding:"required"`
-	CategoryID  string  `json:"category_id" binding:"required"`
+	CategoryID  uint    `json:"category_id" binding:"required"`
 	Description string  `json:"description" binding:"required"`
 	Price       float64 `json:"price" binding:"required"`
 	Stock       int     `json:"stock" binding:"required"`
@@ -38,8 +38,8 @@ type UpdateProductRequest struct {
 }
 
 type ProductResponse struct {
-	ID          string           `json:"id"`
-	CategoryID  string           `json:"category_id"`
+	ID          uint             `json:"id"`
+	CategoryID  uint             `json:"category_id"`
 	Name        string           `json:"name"`
 	Description string           `json:"description"`
 	Price       float64          `json:"price"`

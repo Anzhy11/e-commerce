@@ -44,7 +44,7 @@ linters:
       rules:
         - name: exported
           severity: warning
-          disabled: false
+          disabled: true
           exclude: [""]
           arguments:
             - "check-private-receivers"

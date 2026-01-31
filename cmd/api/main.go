@@ -13,7 +13,6 @@ import (
 	"github.com/anzhy11/go-e-commerce/internal/database"
 	"github.com/anzhy11/go-e-commerce/internal/logger"
 	"github.com/anzhy11/go-e-commerce/internal/server"
-	"github.com/anzhy11/go-e-commerce/internal/server/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
@@ -43,7 +42,6 @@ func main() {
 
 	srv := server.New(cfg, db, log)
 	router := srv.SetupRoutes()
-	middlewares.New(srv, cfg)
 
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%s", cfg.Server.Port),

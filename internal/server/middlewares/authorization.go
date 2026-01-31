@@ -9,26 +9,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Middlewares) Authorization() gin.HandlerFunc {
+func (m *Middlewares) Authorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			utils.Unauthorized(c, "Unauthorized")
+			utils.Unauthorized(c, "Unauthorized", nil)
 			c.Abort()
 			return
 		}
 
 		tokenParts := strings.Split(authHeader, " ")
 		if len(tokenParts) != 2 || tokenParts[0] != "Bearer" {
-			utils.Unauthorized(c, "Unauthorized")
+			utils.Unauthorized(c, "Unauthorized", nil)
 			c.Abort()
 			return
 		}
 
 		tokenString := tokenParts[1]
-		payload, err := utils.VerifyToken(tokenString, s.cfg.JWT.Secret)
+		payload, err := utils.VerifyToken(tokenString, m.cfg.JWT.Secret)
 		if err != nil {
-			utils.Unauthorized(c, "Unauthorized")
+			utils.Unauthorized(c, "Unauthorized", err)
 			c.Abort()
 			return
 		}
@@ -40,17 +40,17 @@ func (s *Middlewares) Authorization() gin.HandlerFunc {
 	}
 }
 
-func (s *Middlewares) AdminAuthorization() gin.HandlerFunc {
+func (m *Middlewares) AdminAuthorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role := c.GetString("role")
 		if role == "" {
-			utils.Forbidden(c, "Forbidden")
+			utils.Forbidden(c, "Forbidden", nil)
 			c.Abort()
 			return
 		}
 
 		if role != string(models.RoleAdmin) {
-			utils.Forbidden(c, "Forbidden")
+			utils.Forbidden(c, "Forbidden", nil)
 			c.Abort()
 			return
 		}
@@ -59,11 +59,11 @@ func (s *Middlewares) AdminAuthorization() gin.HandlerFunc {
 	}
 }
 
-func (s *Middlewares) RoleAuthorization(roles ...string) gin.HandlerFunc {
+func (m *Middlewares) RoleAuthorization(roles ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role := c.GetString("role")
 		if role == "" {
-			utils.Forbidden(c, "Forbidden")
+			utils.Forbidden(c, "Forbidden", nil)
 			c.Abort()
 			return
 		}
@@ -73,7 +73,7 @@ func (s *Middlewares) RoleAuthorization(roles ...string) gin.HandlerFunc {
 			return
 		}
 
-		utils.Forbidden(c, "Forbidden")
+		utils.Forbidden(c, "Forbidden", nil)
 		c.Abort()
 	}
 }

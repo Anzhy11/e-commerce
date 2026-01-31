@@ -1,8 +1,8 @@
 package dto
 
 type AddToCartRequest struct {
-	ProductID string `json:"product_id" binding:"required"`
-	Quantity  int    `json:"quantity" binding:"required"`
+	ProductID uint `json:"product_id" binding:"required"`
+	Quantity  int  `json:"quantity" binding:"required"`
 }
 
 type UpdateCartRequest struct {
@@ -10,22 +10,22 @@ type UpdateCartRequest struct {
 }
 
 type CartResponse struct {
-	ID        string             `json:"id"`
-	UserID    string             `json:"user_id"`
+	ID        uint               `json:"id"`
+	UserID    uint               `json:"user_id"`
 	Total     int                `json:"total"`
 	CartItems []CartItemResponse `json:"cart_items"`
 }
 
 type CartItemResponse struct {
-	ID       string          `json:"id"`
+	ID       uint            `json:"id"`
 	Quantity int             `json:"quantity"`
 	Subtotal int             `json:"subtotal"`
 	Product  ProductResponse `json:"product"`
 }
 
 type OrderResponse struct {
-	ID          string              `json:"id"`
-	UserID      string              `json:"user_id"`
+	ID          uint                `json:"id"`
+	UserID      uint                `json:"user_id"`
 	Status      string              `json:"status"`
 	TotalAmount int                 `json:"total_amount"`
 	OrderItems  []OrderItemResponse `json:"order_items"`
@@ -33,7 +33,7 @@ type OrderResponse struct {
 }
 
 type OrderItemResponse struct {
-	ID       string          `json:"id"`
+	ID       uint            `json:"id"`
 	Quantity int             `json:"quantity"`
 	Price    int             `json:"price"`
 	Product  ProductResponse `json:"product"`
