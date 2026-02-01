@@ -4,8 +4,10 @@ import (
 	"net/http"
 
 	"github.com/anzhy11/go-e-commerce/internal/config"
+	"github.com/anzhy11/go-e-commerce/internal/interfaces"
 	"github.com/anzhy11/go-e-commerce/internal/server/middlewares"
 	authRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/auth"
+	productRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/products"
 	userRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/users"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
@@ -17,9 +19,10 @@ type Server struct {
 	db  *gorm.DB
 	log *zerolog.Logger
 	mdw *middlewares.Middlewares
+	up  interfaces.Upload
 }
 
-func New(cfg *config.Config, db *gorm.DB, log *zerolog.Logger) *Server {
+func New(cfg *config.Config, db *gorm.DB, log *zerolog.Logger, up interfaces.Upload) *Server {
 	mdw := middlewares.New(cfg)
 
 	return &Server{
@@ -27,6 +30,7 @@ func New(cfg *config.Config, db *gorm.DB, log *zerolog.Logger) *Server {
 		db:  db,
 		log: log,
 		mdw: mdw,
+		up:  up,
 	}
 }
 
@@ -40,11 +44,10 @@ func (s *Server) SetupRoutes() *gin.Engine {
 	router.GET("/health", healthCheckHandler)
 
 	apiGroup := router.Group("/api/v1")
-	protectedGroup := apiGroup.Group("/")
-	protectedGroup.Use(s.mdw.Authorization())
 
 	authRoutes.Setup(apiGroup, s.db, s.cfg, s.log)
-	userRoutes.Setup(protectedGroup, s.db)
+	userRoutes.Setup(apiGroup, s.mdw, s.db)
+	productRoutes.Setup(apiGroup, s.mdw, s.db, s.cfg, s.up)
 
 	return router
 }

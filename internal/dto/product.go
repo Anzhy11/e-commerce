@@ -29,6 +29,7 @@ type CreateProductRequest struct {
 }
 
 type UpdateProductRequest struct {
+	CategoryID  uint    `json:"category_id" binding:"omitempty"`
 	Name        string  `json:"name" binding:"omitempty"`
 	Description string  `json:"description" binding:"omitempty"`
 	Price       float64 `json:"price" binding:"omitempty"`
@@ -38,21 +39,21 @@ type UpdateProductRequest struct {
 }
 
 type ProductResponse struct {
-	ID          uint             `json:"id"`
-	CategoryID  uint             `json:"category_id"`
-	Name        string           `json:"name"`
-	Description string           `json:"description"`
-	Price       float64          `json:"price"`
-	Stock       int              `json:"stock"`
-	SKU         string           `json:"sku"`
-	IsActive    bool             `json:"is_active"`
-	Category    CategoryResponse `json:"category"`
-	Images      []ImageResponse  `json:"images"`
-	UpdatedAt   string           `json:"updated_at"`
+	ID          uint                   `json:"id"`
+	CategoryID  uint                   `json:"category_id"`
+	Name        string                 `json:"name"`
+	Description string                 `json:"description"`
+	Price       float64                `json:"price"`
+	Stock       int                    `json:"stock"`
+	SKU         string                 `json:"sku"`
+	IsActive    bool                   `json:"is_active"`
+	Category    CategoryResponse       `json:"category"`
+	Images      []ProductImageResponse `json:"images"`
+	UpdatedAt   string                 `json:"updated_at"`
 }
 
-type ImageResponse struct {
-	ID        string `json:"id"`
+type ProductImageResponse struct {
+	ID        uint   `json:"id"`
 	URL       string `json:"url"`
 	AltText   string `json:"alt_text"`
 	IsPrimary bool   `json:"is_primary"`

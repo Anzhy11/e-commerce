@@ -11,7 +11,9 @@ import (
 
 	"github.com/anzhy11/go-e-commerce/internal/config"
 	"github.com/anzhy11/go-e-commerce/internal/database"
+	"github.com/anzhy11/go-e-commerce/internal/interfaces"
 	"github.com/anzhy11/go-e-commerce/internal/logger"
+	"github.com/anzhy11/go-e-commerce/internal/providers"
 	"github.com/anzhy11/go-e-commerce/internal/server"
 	"github.com/gin-gonic/gin"
 )
@@ -40,7 +42,14 @@ func main() {
 	}()
 	gin.SetMode(cfg.Server.GinMode)
 
-	srv := server.New(cfg, db, log)
+	var up interfaces.Upload
+	if cfg.Upload.Provider == "s3" {
+		up = providers.NewS3UploadProvider()
+	} else {
+		up = providers.NewLocalUploadProvider(cfg.Upload.Path)
+	}
+
+	srv := server.New(cfg, db, log, up)
 	router := srv.SetupRoutes()
 
 	httpServer := &http.Server{

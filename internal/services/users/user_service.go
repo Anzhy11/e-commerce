@@ -10,7 +10,7 @@ import (
 
 type UserServiceInterface interface {
 	GetProfile(userID uint) (*dto.UserResponse, error)
-	UpdateProfile(userID uint, req *dto.UpdateProfileRequest) (*dto.UserResponse, error)
+	UpdateProfile(userID uint, data *dto.UpdateProfileRequest) (*dto.UserResponse, error)
 }
 
 type userService struct {
@@ -46,7 +46,7 @@ func (s *userService) GetProfile(userID uint) (*dto.UserResponse, error) {
 	}, nil
 }
 
-func (s *userService) UpdateProfile(userID uint, req *dto.UpdateProfileRequest) (*dto.UserResponse, error) {
+func (s *userService) UpdateProfile(userID uint, data *dto.UpdateProfileRequest) (*dto.UserResponse, error) {
 	user, err := s.userRepo.GetUserById(userID)
 	if err != nil {
 		return nil, err
@@ -56,9 +56,9 @@ func (s *userService) UpdateProfile(userID uint, req *dto.UpdateProfileRequest) 
 		return nil, errors.New("user not found")
 	}
 
-	user.FirstName = req.FirstName
-	user.LastName = req.LastName
-	user.Phone = req.Phone
+	user.FirstName = data.FirstName
+	user.LastName = data.LastName
+	user.Phone = data.Phone
 
 	if err := s.userRepo.UpdateUser(user); err != nil {
 		return nil, err

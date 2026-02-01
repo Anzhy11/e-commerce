@@ -48,6 +48,7 @@ type JWTConfig struct {
 type UploadConfig struct {
 	Path          string
 	MaxUploadSize int64
+	Provider      string
 }
 
 func Load() (*Config, error) {
@@ -86,6 +87,7 @@ func Load() (*Config, error) {
 		Upload: UploadConfig{
 			Path:          getEnv("UPLOAD_PATH", "./uploads"),
 			MaxUploadSize: maxUploadSize,
+			Provider:      getEnv("UPLOAD_PROVIDER", "local"),
 		},
 	}, nil
 }

@@ -16,9 +16,9 @@ import (
 )
 
 type AuthServiceInterface interface {
-	Register(req *dto.RegisterRequest) (*dto.AuthResponse, error)
-	Login(req *dto.LoginRequest) (*dto.AuthResponse, error)
-	RefreshToken(req *dto.RefreshTokenRequest) (*dto.AuthResponse, error)
+	Register(data *dto.RegisterRequest) (*dto.AuthResponse, error)
+	Login(data *dto.LoginRequest) (*dto.AuthResponse, error)
+	RefreshToken(data *dto.RefreshTokenRequest) (*dto.AuthResponse, error)
 	Logout(rt string) error
 }
 
@@ -42,8 +42,8 @@ func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger) AuthServiceInterf
 	}
 }
 
-func (s *authService) Register(req *dto.RegisterRequest) (*dto.AuthResponse, error) {
-	existingUser, err := s.userRepo.GetUserByEmail(req.Email)
+func (s *authService) Register(data *dto.RegisterRequest) (*dto.AuthResponse, error) {
+	existingUser, err := s.userRepo.GetUserByEmail(data.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -52,17 +52,17 @@ func (s *authService) Register(req *dto.RegisterRequest) (*dto.AuthResponse, err
 		return nil, errors.New("user already exists")
 	}
 
-	hashedPassword, err := encryption.HashPassword(req.Password)
+	hashedPassword, err := encryption.HashPassword(data.Password)
 	if err != nil {
 		return nil, err
 	}
 
 	user := models.User{
-		FirstName: req.FirstName,
-		LastName:  req.LastName,
-		Email:     req.Email,
+		FirstName: data.FirstName,
+		LastName:  data.LastName,
+		Email:     data.Email,
 		Password:  hashedPassword,
-		Phone:     req.Phone,
+		Phone:     data.Phone,
 		Role:      string(models.RoleCustomer),
 	}
 
@@ -81,8 +81,8 @@ func (s *authService) Register(req *dto.RegisterRequest) (*dto.AuthResponse, err
 	return s.generateAuthResponse(&user)
 }
 
-func (s *authService) Login(req *dto.LoginRequest) (*dto.AuthResponse, error) {
-	user, err := s.userRepo.GetUserByEmail(req.Email)
+func (s *authService) Login(data *dto.LoginRequest) (*dto.AuthResponse, error) {
+	user, err := s.userRepo.GetUserByEmail(data.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -91,20 +91,20 @@ func (s *authService) Login(req *dto.LoginRequest) (*dto.AuthResponse, error) {
 		return nil, errors.New("user not found")
 	}
 
-	if !encryption.CheckPassword(req.Password, user.Password) {
+	if !encryption.CheckPassword(data.Password, user.Password) {
 		return nil, errors.New("invalid password")
 	}
 
 	return s.generateAuthResponse(user)
 }
 
-func (s *authService) RefreshToken(req *dto.RefreshTokenRequest) (*dto.AuthResponse, error) {
-	payload, err := utils.VerifyToken(req.RefreshToken, s.cfg.JWT.Secret)
+func (s *authService) RefreshToken(data *dto.RefreshTokenRequest) (*dto.AuthResponse, error) {
+	payload, err := utils.VerifyToken(data.RefreshToken, s.cfg.JWT.Secret)
 	if err != nil {
 		return nil, errors.New("invalid refresh token")
 	}
 
-	refreshToken, err := s.authRepo.GetRefreshToken(req.RefreshToken)
+	refreshToken, err := s.authRepo.GetRefreshToken(data.RefreshToken)
 	if err != nil {
 		return nil, err
 	}
