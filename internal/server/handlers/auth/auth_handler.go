@@ -17,18 +17,17 @@ type AuthHandlerInterface interface {
 	Logout(c *gin.Context)
 }
 
-type AuthHandler struct {
+type authHandler struct {
 	as authService.AuthServiceInterface
 }
 
 func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger) AuthHandlerInterface {
-	as := authService.New(db, cfg, log)
-	return &AuthHandler{
-		as: as,
+	return &authHandler{
+		as: authService.New(db, cfg, log),
 	}
 }
 
-func (h *AuthHandler) Register(c *gin.Context) {
+func (h *authHandler) Register(c *gin.Context) {
 	var req dto.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		utils.BadRequest(c, "invalid request", err)
@@ -44,7 +43,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	utils.SuccessResponse(c, "user registered successfully", resp)
 }
 
-func (h *AuthHandler) Login(c *gin.Context) {
+func (h *authHandler) Login(c *gin.Context) {
 	var req dto.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		utils.BadRequest(c, "invalid request", err)
@@ -60,7 +59,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	utils.SuccessResponse(c, "user logged in successfully", resp)
 }
 
-func (h *AuthHandler) RefreshToken(c *gin.Context) {
+func (h *authHandler) RefreshToken(c *gin.Context) {
 	var req dto.RefreshTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		utils.BadRequest(c, "invalid request", err)
@@ -76,7 +75,7 @@ func (h *AuthHandler) RefreshToken(c *gin.Context) {
 	utils.SuccessResponse(c, "token refreshed successfully", resp)
 }
 
-func (h *AuthHandler) Logout(c *gin.Context) {
+func (h *authHandler) Logout(c *gin.Context) {
 	var req dto.RefreshTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		utils.BadRequest(c, "invalid request", err)

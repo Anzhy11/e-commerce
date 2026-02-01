@@ -1,23 +1,23 @@
 package userRoutes
 
 import (
-	"github.com/anzhy11/go-e-commerce/internal/config"
 	userHandler "github.com/anzhy11/go-e-commerce/internal/server/handlers/users"
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog"
+	"gorm.io/gorm"
 )
 
 type userRoutes struct {
 	uh userHandler.UserHandlerInterface
 }
 
-func Setup(apiGroup *gin.RouterGroup, cfg *config.Config, log *zerolog.Logger) {
-	uh := userHandler.New(cfg, log)
+func Setup(routeGroup *gin.RouterGroup, db *gorm.DB) {
+	uh := userHandler.New(db)
 
 	ur := &userRoutes{
 		uh: uh,
 	}
 
-	urg := apiGroup.Group("/users")
-	urg.GET("/", ur.uh.GetUser)
+	urg := routeGroup.Group("/users")
+	urg.GET("/profile", ur.uh.GetProfile)
+	urg.PUT("/profile", ur.uh.UpdateProfile)
 }

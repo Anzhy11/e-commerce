@@ -40,9 +40,11 @@ func (s *Server) SetupRoutes() *gin.Engine {
 	router.GET("/health", healthCheckHandler)
 
 	apiGroup := router.Group("/api/v1")
+	protectedGroup := apiGroup.Group("/")
+	protectedGroup.Use(s.mdw.Authorization())
 
 	authRoutes.Setup(apiGroup, s.db, s.cfg, s.log)
-	userRoutes.Setup(apiGroup, s.cfg, s.log)
+	userRoutes.Setup(protectedGroup, s.db)
 
 	return router
 }

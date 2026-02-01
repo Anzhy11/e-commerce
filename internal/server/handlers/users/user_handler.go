@@ -1,33 +1,56 @@
 package userHandler
 
 import (
-	"net/http"
-
-	"github.com/anzhy11/go-e-commerce/internal/config"
+	"github.com/anzhy11/go-e-commerce/internal/dto"
 	userService "github.com/anzhy11/go-e-commerce/internal/services/users"
+	"github.com/anzhy11/go-e-commerce/internal/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog"
+	"gorm.io/gorm"
 )
 
 type UserHandlerInterface interface {
-	GetUser(c *gin.Context)
+	GetProfile(c *gin.Context)
+	UpdateProfile(c *gin.Context)
 }
 
 type userHandler struct {
-	us  userService.UserServiceInterface
-	log *zerolog.Logger
+	us userService.UserServiceInterface
+	db *gorm.DB
 }
 
-func New(cfg *config.Config, log *zerolog.Logger) UserHandlerInterface {
-	us := userService.New(cfg, log)
+func New(db *gorm.DB) UserHandlerInterface {
 	return &userHandler{
-		us:  us,
-		log: log,
+		db: db,
+		us: userService.New(db),
 	}
 }
 
-func (h *userHandler) GetUser(c *gin.Context) {
-	h.log.Info().Msg("Hit user handler")
-	user := h.us.GetUser("test123")
-	c.JSON(http.StatusOK, gin.H{"success": true, "message": user})
+func (h *userHandler) GetProfile(c *gin.Context) {
+	userID := c.GetUint("user_id")
+
+	user, err := h.us.GetProfile(userID)
+	if err != nil {
+		utils.NotFound(c, "User profile not found", err)
+		return
+	}
+
+	utils.SuccessResponse(c, "User profile fetched successfully", user)
+}
+
+func (h *userHandler) UpdateProfile(c *gin.Context) {
+	userID := c.GetUint("user_id")
+
+	var req dto.UpdateProfileRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.BadRequest(c, "invalid request", err)
+		return
+	}
+
+	user, err := h.us.UpdateProfile(userID, &req)
+	if err != nil {
+		utils.InternalServerError(c, "failed to update user profile", err)
+		return
+	}
+
+	utils.SuccessResponse(c, "User profile updated successfully", user)
 }
