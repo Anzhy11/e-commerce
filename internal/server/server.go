@@ -42,6 +42,7 @@ func (s *Server) SetupRoutes() *gin.Engine {
 	router.Use(s.mdw.CorsMiddleware())
 
 	router.GET("/health", healthCheckHandler)
+	router.Static("/uploads", "./uploads")
 
 	apiGroup := router.Group("/api/v1")
 

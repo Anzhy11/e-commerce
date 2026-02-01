@@ -44,7 +44,7 @@ func main() {
 
 	var up interfaces.Upload
 	if cfg.Upload.Provider == "s3" {
-		up = providers.NewS3UploadProvider()
+		up = providers.NewS3UploadProvider(cfg)
 	} else {
 		up = providers.NewLocalUploadProvider(cfg.Upload.Path)
 	}

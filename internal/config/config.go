@@ -76,7 +76,7 @@ func Load() (*Config, error) {
 			SecretAccessKey: getEnv("AWS_SECRET_ACCESS_KEY", "test"),
 			Region:          getEnv("AWS_REGION", "us-east-1"),
 			S3Bucket:        getEnv("AWS_S3_BUCKET", "ecommerce-uploads"),
-			S3Endpoint:      getEnv("AWS_S3_ENDPOINT", "http://localhost:9000"),
+			S3Endpoint:      getEnv("AWS_S3_ENDPOINT", "http://localhost:4566"),
 			SQSQueueURL:     getEnv("AWS_SQS_QUEUE_URL", "http://localhost:4566/000000000000/ecommerce-shop"),
 		},
 		JWT: JWTConfig{
