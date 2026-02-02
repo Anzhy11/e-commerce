@@ -14,7 +14,6 @@ type CartServiceInterface interface {
 	AddToCart(userID uint, cart *dto.AddToCartRequest) (*dto.CartResponse, error)
 	UpdateCartItem(userID, cartItemID uint, cart *dto.UpdateCartRequest) (*dto.CartResponse, error)
 	RemoveFromCart(userID uint, cartItemID uint) error
-	ClearCart(userID uint) (*dto.CartResponse, error)
 }
 
 type cartService struct {
@@ -111,19 +110,6 @@ func (s *cartService) RemoveFromCart(userID, carttemID uint) error {
 		return err
 	}
 	return nil
-}
-
-func (s *cartService) ClearCart(userID uint) (*dto.CartResponse, error) {
-	cart, err := s.cartRepo.GetCartByUserID(userID)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := s.cartRepo.DeleteCart(cart); err != nil {
-		return nil, err
-	}
-
-	return s.generateCartResponse(cart), nil
 }
 
 // Helper

@@ -15,7 +15,6 @@ type CartHandlerInterface interface {
 	AddToCart(c *gin.Context)
 	UpdateCartItem(c *gin.Context)
 	RemoveFromCart(c *gin.Context)
-	ClearCart(c *gin.Context)
 }
 
 type cartHandler struct {
@@ -37,7 +36,7 @@ func (h *cartHandler) GetCartByUserID(c *gin.Context) {
 		return
 	}
 
-	utils.SuccessResponse(c, "cart found", cart)
+	utils.SuccessResponse(c, "cart initialized successfully", cart)
 }
 
 func (h *cartHandler) AddToCart(c *gin.Context) {
@@ -97,16 +96,4 @@ func (h *cartHandler) RemoveFromCart(c *gin.Context) {
 	}
 
 	utils.SuccessResponse(c, "removed from cart", nil)
-}
-
-func (h *cartHandler) ClearCart(c *gin.Context) {
-	userID := c.GetUint("user_id")
-
-	cart, err := h.cartService.ClearCart(userID)
-	if err != nil {
-		utils.InternalServerError(c, "failed to clear cart", err)
-		return
-	}
-
-	utils.SuccessResponse(c, "cart cleared", cart)
 }

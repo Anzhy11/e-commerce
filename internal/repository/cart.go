@@ -9,7 +9,6 @@ type CartRepositoryInterface interface {
 	CreateCart(cart *models.Cart) error
 	GetCartByUserID(userID uint) (*models.Cart, error)
 	UpdateCart(cart *models.Cart) error
-	DeleteCart(cart *models.Cart) error
 	GetCartItemByCartID(cartID, productID uint) (*models.CartItem, error)
 	GetUserCartItem(userID, cartItemID uint) (*models.CartItem, error)
 	CreateCartItem(cartItem *models.CartItem) error
@@ -40,10 +39,6 @@ func (r *CartRepository) GetCartByUserID(userID uint) (*models.Cart, error) {
 
 func (r *CartRepository) UpdateCart(cart *models.Cart) error {
 	return r.db.Save(&cart).Error
-}
-
-func (r *CartRepository) DeleteCart(cart *models.Cart) error {
-	return r.db.Delete(&cart).Error
 }
 
 // CartItem

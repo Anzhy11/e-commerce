@@ -22,5 +22,4 @@ func Setup(routeGroup *gin.RouterGroup, mdw *middlewares.Middlewares, db *gorm.D
 	crg.POST("/", cr.cartHandler.AddToCart)
 	crg.PUT("/:id", cr.cartHandler.UpdateCartItem)
 	crg.DELETE("/:id", cr.cartHandler.RemoveFromCart)
-	crg.DELETE("/", cr.cartHandler.ClearCart)
 }
