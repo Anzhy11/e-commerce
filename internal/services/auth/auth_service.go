@@ -26,9 +26,9 @@ type authService struct {
 	db        *gorm.DB
 	log       *zerolog.Logger
 	cfg       *config.Config
-	userRepo  *repository.UserRpository
-	orderRepo *repository.OrderRepository
-	authRepo  *repository.AuthRepository
+	userRepo  repository.UserRepositoryInterface
+	orderRepo repository.OrderRepositoryInterface
+	authRepo  repository.AuthRepositoryInterface
 }
 
 func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger) AuthServiceInterface {

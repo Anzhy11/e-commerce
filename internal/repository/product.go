@@ -5,11 +5,28 @@ import (
 	"gorm.io/gorm"
 )
 
+type ProductRepositoryInterface interface {
+	CreateCategory(category *models.Category) error
+	GetAllCategories() ([]models.Category, error)
+	GetCategoryById(categoryID uint) (*models.Category, error)
+	UpdateCategory(category *models.Category) error
+	DeleteCategory(categoryID uint) error
+	CreateProduct(product *models.Product) error
+	GetProducts(offset, limit int) ([]models.Product, int64, error)
+	GetProductsCount() int64
+	GetProductById(productID uint) (*models.Product, error)
+	UpdateProduct(product *models.Product) error
+	DeleteProduct(productID uint) error
+	UploadProductImage(image *models.ProductImage) error
+	DeleteProductImage(imageID uint) error
+	CountProductImage(productID uint) int64
+}
+
 type ProductRepository struct {
 	db *gorm.DB
 }
 
-func NewProductRepo(db *gorm.DB) *ProductRepository {
+func NewProductRepo(db *gorm.DB) ProductRepositoryInterface {
 	return &ProductRepository{
 		db: db,
 	}

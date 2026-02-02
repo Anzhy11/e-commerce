@@ -15,7 +15,7 @@ type UserServiceInterface interface {
 
 type userService struct {
 	db       *gorm.DB
-	userRepo *repository.UserRpository
+	userRepo repository.UserRepositoryInterface
 }
 
 func New(db *gorm.DB) UserServiceInterface {

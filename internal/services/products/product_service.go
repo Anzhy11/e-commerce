@@ -25,7 +25,7 @@ type ProductServiceInterface interface {
 
 type productService struct {
 	db          *gorm.DB
-	productRepo *repository.ProductRepository
+	productRepo repository.ProductRepositoryInterface
 }
 
 func New(db *gorm.DB) ProductServiceInterface {

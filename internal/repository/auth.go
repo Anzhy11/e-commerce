@@ -7,11 +7,17 @@ import (
 	"gorm.io/gorm"
 )
 
+type AuthRepositoryInterface interface {
+	GetRefreshToken(token string) (*models.RefreshToken, error)
+	CreateRefreshToken(data *models.RefreshToken) error
+	DeleteRefreshToken(data *models.RefreshToken)
+}
+
 type AuthRepository struct {
 	db *gorm.DB
 }
 
-func NewAuthRepo(db *gorm.DB) *AuthRepository {
+func NewAuthRepo(db *gorm.DB) AuthRepositoryInterface {
 	return &AuthRepository{
 		db: db,
 	}

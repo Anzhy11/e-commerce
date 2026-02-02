@@ -5,11 +5,15 @@ import (
 	"gorm.io/gorm"
 )
 
+type OrderRepositoryInterface interface {
+	CreateCart(data *models.Cart) error
+}
+
 type OrderRepository struct {
 	db *gorm.DB
 }
 
-func NewOrderRepo(db *gorm.DB) *OrderRepository {
+func NewOrderRepo(db *gorm.DB) OrderRepositoryInterface {
 	return &OrderRepository{
 		db: db,
 	}

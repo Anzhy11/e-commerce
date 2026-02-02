@@ -7,11 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
+type UserRepositoryInterface interface {
+	GetUserByEmail(email string) (*models.User, error)
+	GetUserById(userID uint) (*models.User, error)
+	CreateUser(data *models.User) error
+	UpdateUser(data *models.User) error
+}
+
 type UserRpository struct {
 	db *gorm.DB
 }
 
-func NewUserRepo(db *gorm.DB) *UserRpository {
+func NewUserRepo(db *gorm.DB) UserRepositoryInterface {
 	return &UserRpository{
 		db: db,
 	}
