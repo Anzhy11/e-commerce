@@ -9,7 +9,7 @@ import (
 	authRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/auth"
 	cartRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/cart"
 
-	// orderRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/orders"
+	orderRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/orders"
 	productRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/products"
 	userRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/users"
 
@@ -52,7 +52,9 @@ func (s *Server) SetupRoutes() *gin.Engine {
 	userRoutes.Setup(apiGroup, s.mdw, s.db)
 	productRoutes.Setup(apiGroup, s.mdw, s.db, s.cfg, s.up)
 	cartRoutes.Setup(apiGroup, s.mdw, s.db)
-	// orderRoutes.Setup(apiGroup, s.mdw, s.db)
+
+	orderService := orderRoutes.New(apiGroup, s.mdw, s.db)
+	orderService.SetupRoutes()
 
 	return router
 }

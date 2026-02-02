@@ -148,7 +148,7 @@ func (s *productService) GetProducts(page, limit int) ([]dto.ProductResponse, *u
 	totalPages := int((total + int64(limit)) / int64(limit))
 	meta := &utils.PaginatedMeta{
 		Page:       page,
-		PageSize:   limit,
+		Limit:      limit,
 		Total:      total,
 		TotalPages: totalPages,
 	}
