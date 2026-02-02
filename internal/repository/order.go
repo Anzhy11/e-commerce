@@ -6,7 +6,7 @@ import (
 )
 
 type OrderRepositoryInterface interface {
-	CreateCart(data *models.Cart) error
+	CreateOrder(data *models.Order) error
 }
 
 type OrderRepository struct {
@@ -19,6 +19,6 @@ func NewOrderRepo(db *gorm.DB) OrderRepositoryInterface {
 	}
 }
 
-func (r *OrderRepository) CreateCart(data *models.Cart) error {
+func (r *OrderRepository) CreateOrder(data *models.Order) error {
 	return r.db.Create(&data).Error
 }

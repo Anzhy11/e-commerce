@@ -8,18 +8,16 @@ import (
 )
 
 type userRoutes struct {
-	uh userHandler.UserHandlerInterface
+	userHandler userHandler.UserHandlerInterface
 }
 
 func Setup(routeGroup *gin.RouterGroup, mdw *middlewares.Middlewares, db *gorm.DB) {
-	uh := userHandler.New(db)
-
 	ur := &userRoutes{
-		uh: uh,
+		userHandler: userHandler.New(db),
 	}
 
 	urg := routeGroup.Group("/users")
 	urg.Use(mdw.Authorization())
-	urg.GET("/profile", ur.uh.GetProfile)
-	urg.PUT("/profile", ur.uh.UpdateProfile)
+	urg.GET("/profile", ur.userHandler.GetProfile)
+	urg.PUT("/profile", ur.userHandler.UpdateProfile)
 }

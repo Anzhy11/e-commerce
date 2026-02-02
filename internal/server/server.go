@@ -7,8 +7,12 @@ import (
 	"github.com/anzhy11/go-e-commerce/internal/interfaces"
 	"github.com/anzhy11/go-e-commerce/internal/server/middlewares"
 	authRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/auth"
+	cartRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/cart"
+
+	// orderRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/orders"
 	productRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/products"
 	userRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/users"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
@@ -23,13 +27,11 @@ type Server struct {
 }
 
 func New(cfg *config.Config, db *gorm.DB, log *zerolog.Logger, up interfaces.Upload) *Server {
-	mdw := middlewares.New(cfg)
-
 	return &Server{
 		cfg: cfg,
 		db:  db,
 		log: log,
-		mdw: mdw,
+		mdw: middlewares.New(cfg),
 		up:  up,
 	}
 }
@@ -49,6 +51,8 @@ func (s *Server) SetupRoutes() *gin.Engine {
 	authRoutes.Setup(apiGroup, s.db, s.cfg, s.log)
 	userRoutes.Setup(apiGroup, s.mdw, s.db)
 	productRoutes.Setup(apiGroup, s.mdw, s.db, s.cfg, s.up)
+	cartRoutes.Setup(apiGroup, s.mdw, s.db)
+	// orderRoutes.Setup(apiGroup, s.mdw, s.db)
 
 	return router
 }

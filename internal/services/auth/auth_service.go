@@ -23,22 +23,22 @@ type AuthServiceInterface interface {
 }
 
 type authService struct {
-	db        *gorm.DB
-	log       *zerolog.Logger
-	cfg       *config.Config
-	userRepo  repository.UserRepositoryInterface
-	orderRepo repository.OrderRepositoryInterface
-	authRepo  repository.AuthRepositoryInterface
+	db       *gorm.DB
+	log      *zerolog.Logger
+	cfg      *config.Config
+	userRepo repository.UserRepositoryInterface
+	cartRepo repository.CartRepositoryInterface
+	authRepo repository.AuthRepositoryInterface
 }
 
 func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger) AuthServiceInterface {
 	return &authService{
-		db:        db,
-		cfg:       cfg,
-		log:       log,
-		userRepo:  repository.NewUserRepo(db),
-		orderRepo: repository.NewOrderRepo(db),
-		authRepo:  repository.NewAuthRepo(db),
+		db:       db,
+		cfg:      cfg,
+		log:      log,
+		userRepo: repository.NewUserRepo(db),
+		cartRepo: repository.NewCartRepo(db),
+		authRepo: repository.NewAuthRepo(db),
 	}
 }
 
@@ -74,7 +74,7 @@ func (s *authService) Register(data *dto.RegisterRequest) (*dto.AuthResponse, er
 		UserID: user.ID,
 	}
 
-	if err := s.orderRepo.CreateCart(&cart); err != nil {
+	if err := s.cartRepo.CreateCart(&cart); err != nil {
 		s.log.Error().Err(err).Msg("Failed to create cart")
 	}
 

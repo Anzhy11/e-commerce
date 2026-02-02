@@ -14,21 +14,19 @@ type UserHandlerInterface interface {
 }
 
 type userHandler struct {
-	us userService.UserServiceInterface
-	db *gorm.DB
+	userService userService.UserServiceInterface
 }
 
 func New(db *gorm.DB) UserHandlerInterface {
 	return &userHandler{
-		db: db,
-		us: userService.New(db),
+		userService: userService.New(db),
 	}
 }
 
 func (h *userHandler) GetProfile(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
-	user, err := h.us.GetProfile(userID)
+	user, err := h.userService.GetProfile(userID)
 	if err != nil {
 		utils.NotFound(c, "User profile not found", err)
 		return
@@ -46,7 +44,7 @@ func (h *userHandler) UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	user, err := h.us.UpdateProfile(userID, &req)
+	user, err := h.userService.UpdateProfile(userID, &req)
 	if err != nil {
 		utils.InternalServerError(c, "failed to update user profile", err)
 		return
