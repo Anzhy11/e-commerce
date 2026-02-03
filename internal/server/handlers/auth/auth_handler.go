@@ -3,6 +3,7 @@ package authHandler
 import (
 	"github.com/anzhy11/go-e-commerce/internal/config"
 	"github.com/anzhy11/go-e-commerce/internal/dto"
+	"github.com/anzhy11/go-e-commerce/internal/events"
 	authService "github.com/anzhy11/go-e-commerce/internal/services/auth"
 	"github.com/anzhy11/go-e-commerce/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -21,9 +22,9 @@ type authHandler struct {
 	as authService.AuthServiceInterface
 }
 
-func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger) AuthHandlerInterface {
+func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger, eventPub events.PublisherInterface) AuthHandlerInterface {
 	return &authHandler{
-		as: authService.New(db, cfg, log),
+		as: authService.New(db, cfg, log, eventPub),
 	}
 }
 

@@ -37,6 +37,7 @@ type AWSConfig struct {
 	S3Bucket        string
 	S3Endpoint      string
 	SQSQueueURL     string
+	EventQueueName  string
 }
 
 type JWTConfig struct {
@@ -77,7 +78,8 @@ func Load() (*Config, error) {
 			Region:          getEnv("AWS_REGION", "us-east-1"),
 			S3Bucket:        getEnv("AWS_S3_BUCKET", "ecommerce-uploads"),
 			S3Endpoint:      getEnv("AWS_S3_ENDPOINT", "http://localhost:4566"),
-			SQSQueueURL:     getEnv("AWS_SQS_QUEUE_URL", "http://localhost:4566/000000000000/ecommerce-shop"),
+			SQSQueueURL:     getEnv("AWS_SQS_QUEUE_URL", "http://localhost:4566/000000000000/ecommerce-events"),
+			EventQueueName:  getEnv("AWS_EVENT_QUEUE_NAME", "ecommerce-events"),
 		},
 		JWT: JWTConfig{
 			Secret:                getEnv("JWT_SECRET", "secret"),

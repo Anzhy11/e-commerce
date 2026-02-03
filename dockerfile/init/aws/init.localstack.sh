@@ -2,6 +2,6 @@
 
 awslocal s3 mb s3://ecommerce-uploads
 
-awslocal sqs create-queue --queue-name ecommerce-shop
+awslocal sqs create-queue --queue-name ecommerce-events
 
 echo "LocalStack initialized"

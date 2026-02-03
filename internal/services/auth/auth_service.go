@@ -2,12 +2,14 @@ package authService
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
 
 	"github.com/anzhy11/go-e-commerce/internal/config"
 	"github.com/anzhy11/go-e-commerce/internal/dto"
+	"github.com/anzhy11/go-e-commerce/internal/events"
 	"github.com/anzhy11/go-e-commerce/internal/models"
 	"github.com/anzhy11/go-e-commerce/internal/repository"
 	"github.com/anzhy11/go-e-commerce/internal/utils"
@@ -29,13 +31,15 @@ type authService struct {
 	userRepo repository.UserRepositoryInterface
 	cartRepo repository.CartRepositoryInterface
 	authRepo repository.AuthRepositoryInterface
+	eventPub events.PublisherInterface
 }
 
-func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger) AuthServiceInterface {
+func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger, eventPub events.PublisherInterface) AuthServiceInterface {
 	return &authService{
 		db:       db,
 		cfg:      cfg,
 		log:      log,
+		eventPub: eventPub,
 		userRepo: repository.NewUserRepo(db),
 		cartRepo: repository.NewCartRepo(db),
 		authRepo: repository.NewAuthRepo(db),
@@ -147,8 +151,13 @@ func (s *authService) generateAuthResponse(user *models.User) (*dto.AuthResponse
 		ExpiresAt: time.Now().Add(s.cfg.JWT.RefreshTokenExpiresIn),
 	}
 
-	if err := s.authRepo.CreateRefreshToken(&refreshTokenModel); err != nil {
-		return nil, err
+	if rtErr := s.authRepo.CreateRefreshToken(&refreshTokenModel); rtErr != nil {
+		return nil, rtErr
+	}
+
+	err = s.eventPub.Publish("USER_LOGGED_IN", user, map[string]string{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to publish user logged in event: %w", err)
 	}
 
 	return &dto.AuthResponse{

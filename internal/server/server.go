@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/anzhy11/go-e-commerce/internal/config"
+	"github.com/anzhy11/go-e-commerce/internal/events"
 	"github.com/anzhy11/go-e-commerce/internal/interfaces"
 	"github.com/anzhy11/go-e-commerce/internal/server/middlewares"
 	authRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/auth"
@@ -19,20 +20,22 @@ import (
 )
 
 type Server struct {
-	cfg *config.Config
-	db  *gorm.DB
-	log *zerolog.Logger
-	mdw *middlewares.Middlewares
-	up  interfaces.Upload
+	cfg      *config.Config
+	db       *gorm.DB
+	log      *zerolog.Logger
+	mdw      *middlewares.Middlewares
+	eventPub events.PublisherInterface
+	up       interfaces.Upload
 }
 
-func New(cfg *config.Config, db *gorm.DB, log *zerolog.Logger, up interfaces.Upload) *Server {
+func New(cfg *config.Config, db *gorm.DB, log *zerolog.Logger, eventPub events.PublisherInterface, up interfaces.Upload) *Server {
 	return &Server{
-		cfg: cfg,
-		db:  db,
-		log: log,
-		mdw: middlewares.New(cfg),
-		up:  up,
+		cfg:      cfg,
+		db:       db,
+		log:      log,
+		mdw:      middlewares.New(cfg),
+		eventPub: eventPub,
+		up:       up,
 	}
 }
 
@@ -48,7 +51,7 @@ func (s *Server) SetupRoutes() *gin.Engine {
 
 	apiGroup := router.Group("/api/v1")
 
-	authRoutes.Setup(apiGroup, s.db, s.cfg, s.log)
+	authRoutes.Setup(apiGroup, s.db, s.cfg, s.log, s.eventPub)
 	userRoutes.Setup(apiGroup, s.mdw, s.db)
 	productRoutes.Setup(apiGroup, s.mdw, s.db, s.cfg, s.up)
 	cartRoutes.Setup(apiGroup, s.mdw, s.db)

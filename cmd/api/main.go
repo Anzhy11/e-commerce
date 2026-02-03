@@ -11,6 +11,7 @@ import (
 
 	"github.com/anzhy11/go-e-commerce/internal/config"
 	"github.com/anzhy11/go-e-commerce/internal/database"
+	"github.com/anzhy11/go-e-commerce/internal/events"
 	"github.com/anzhy11/go-e-commerce/internal/interfaces"
 	"github.com/anzhy11/go-e-commerce/internal/logger"
 	"github.com/anzhy11/go-e-commerce/internal/providers"
@@ -36,8 +37,8 @@ func main() {
 	}
 
 	defer func() {
-		if err := mainDb.Close(); err != nil {
-			log.Error().Err(err).Msg("Failed to close database connection")
+		if dbErr := mainDb.Close(); dbErr != nil {
+			log.Error().Err(dbErr).Msg("Failed to close database connection")
 		}
 	}()
 	gin.SetMode(cfg.Server.GinMode)
@@ -49,7 +50,13 @@ func main() {
 		up = providers.NewLocalUploadProvider(cfg.Upload.Path)
 	}
 
-	srv := server.New(cfg, db, log, up)
+	ctx := context.Background()
+	eventPub, err := events.NewEventPublisher(ctx, &cfg.AWS)
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to create event publisher")
+	}
+
+	srv := server.New(cfg, db, log, eventPub, up)
 	router := srv.SetupRoutes()
 
 	httpServer := &http.Server{
