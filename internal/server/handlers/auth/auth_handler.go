@@ -28,6 +28,16 @@ func New(db *gorm.DB, cfg *config.Config, log *zerolog.Logger, eventPub events.P
 	}
 }
 
+// @Summary Register a new user
+// @Description Register a new user with email and password
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body dto.RegisterRequest true "User registration data"
+// @Success 201 {object} utils.Response{data=dto.AuthResponse} "User registered successfully"
+// @Failure 400 {object} utils.Response "Invalid request data or user already exists"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /auth/register [post]
 func (h *authHandler) Register(c *gin.Context) {
 	var req dto.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -44,6 +54,16 @@ func (h *authHandler) Register(c *gin.Context) {
 	utils.SuccessResponse(c, "user registered successfully", resp)
 }
 
+// @Summary Login user
+// @Description Login user with email and password
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body dto.LoginRequest true "User login data"
+// @Success 200 {object} utils.Response{data=dto.AuthResponse} "User logged in successfully"
+// @Failure 400 {object} utils.Response "Invalid request data or user not found"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /auth/login [post]
 func (h *authHandler) Login(c *gin.Context) {
 	var req dto.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -60,6 +80,16 @@ func (h *authHandler) Login(c *gin.Context) {
 	utils.SuccessResponse(c, "user logged in successfully", resp)
 }
 
+// @Summary Refresh token
+// @Description Refresh access token using refresh token
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body dto.RefreshTokenRequest true "Refresh token data"
+// @Success 200 {object} utils.Response{data=dto.AuthResponse} "Token refreshed successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /auth/refresh [post]
 func (h *authHandler) RefreshToken(c *gin.Context) {
 	var req dto.RefreshTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -76,6 +106,16 @@ func (h *authHandler) RefreshToken(c *gin.Context) {
 	utils.SuccessResponse(c, "token refreshed successfully", resp)
 }
 
+// @Summary Logout user
+// @Description Logout user by revoking refresh token
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body dto.RefreshTokenRequest true "Refresh token data"
+// @Success 200 {object} utils.Response "User logged out successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /auth/logout [post]
 func (h *authHandler) Logout(c *gin.Context) {
 	var req dto.RefreshTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

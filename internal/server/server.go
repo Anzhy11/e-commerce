@@ -14,8 +14,11 @@ import (
 	productRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/products"
 	userRoutes "github.com/anzhy11/go-e-commerce/internal/server/routes/users"
 
+	_ "github.com/anzhy11/go-e-commerce/docs"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
@@ -47,6 +50,12 @@ func (s *Server) SetupRoutes() *gin.Engine {
 	router.Use(s.mdw.CorsMiddleware())
 
 	router.GET("/health", healthCheckHandler)
+
+	// Swagger documentation
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	router.StaticFile("/api-docs", "./docs/rapidoc.html")
+
+	// Uploads
 	router.Static("/uploads", "./uploads")
 
 	apiGroup := router.Group("/api/v1")

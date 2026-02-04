@@ -27,6 +27,16 @@ func NewCartHandler(db *gorm.DB) CartHandlerInterface {
 	}
 }
 
+// @Summary Get cart by user ID
+// @Description Get cart by user ID
+// @Tags Cart
+// @Produce json
+// @Security BearerAuth
+// @Param user_id path uint true "User ID"
+// @Success 200 {object} utils.Response{data=dto.CartResponse} "Cart retrieved successfully"
+// @Failure 404 {object} utils.Response "Cart not found"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /cart/{user_id} [get]
 func (h *cartHandler) GetCartByUserID(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -39,6 +49,17 @@ func (h *cartHandler) GetCartByUserID(c *gin.Context) {
 	utils.SuccessResponse(c, "cart initialized successfully", cart)
 }
 
+// @Summary Add item to cart
+// @Description Add item to cart
+// @Tags Cart
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.AddToCartRequest true "Cart data"
+// @Success 201 {object} utils.Response{data=dto.CartResponse} "Item added to cart successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /cart [post]
 func (h *cartHandler) AddToCart(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -57,6 +78,18 @@ func (h *cartHandler) AddToCart(c *gin.Context) {
 	utils.SuccessResponse(c, "added to cart", cart)
 }
 
+// @Summary Update cart item
+// @Description Update cart item
+// @Tags Cart
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path uint true "Cart item ID"
+// @Param request body dto.UpdateCartRequest true "Cart data"
+// @Success 200 {object} utils.Response{data=dto.CartResponse} "Cart item updated successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /cart/{id} [put]
 func (h *cartHandler) UpdateCartItem(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -81,6 +114,14 @@ func (h *cartHandler) UpdateCartItem(c *gin.Context) {
 	utils.SuccessResponse(c, "cart item updated", cart)
 }
 
+// @Summary Remove item from cart
+// @Description Remove item from cart
+// @Tags Cart
+// @Security BearerAuth
+// @Param id path uint true "Cart item ID"
+// @Success 200 {object} utils.Response "Item removed from cart successfully"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /cart/{id} [delete]
 func (h *cartHandler) RemoveFromCart(c *gin.Context) {
 	userID := c.GetUint("user_id")
 

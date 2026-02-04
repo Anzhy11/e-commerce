@@ -1,4 +1,4 @@
-.PHONY: help build run-api run-notifier dev lint format migrate-up migrate-down docker-up docker-down
+.PHONY: help build run-api run-notifier dev lint format migrate-up migrate-down docker-up docker-down generate-docs
 
 help:
 	@echo "Available commands:"
@@ -12,6 +12,7 @@ help:
 	@echo "  migrate-down - Rollback database migrations"
 	@echo "  docker-up - Start the application in development mode"
 	@echo "  docker-down - Stop the application"
+	@echo "  generate-docs - Generate Swagger documentation"
 
 build:
 	go run ./scripts/build.go
@@ -42,3 +43,12 @@ docker-up:
 
 docker-down:
 	docker-compose -f docker/docker-compose.yml down
+
+
+# Generate Swagger documentation
+# This command requires the swag CLI tool to be installed
+# Run: go install github.com/swaggo/swag/cmd/swag@latest
+# Then run: make generate-docs
+generate-docs:
+# 	mkdir -p docs
+	swag init -g cmd/api/main.go --o docs --parseDependency --parseInternal --exclude .git,docs,docker,db

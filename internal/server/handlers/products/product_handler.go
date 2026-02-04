@@ -45,6 +45,18 @@ func New(db *gorm.DB, cfg *config.Config, up interfaces.Upload) ProductHandlerIn
 }
 
 // Category
+
+// @Summary Create category
+// @Description Create category
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.CreateCategoryRequest true "Category data"
+// @Success 201 {object} utils.Response{data=dto.CategoryResponse} "Category created successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/categories [post]
 func (h *productHandler) CreateCategory(c *gin.Context) {
 	var req dto.CreateCategoryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -61,6 +73,14 @@ func (h *productHandler) CreateCategory(c *gin.Context) {
 	utils.SuccessResponse(c, "Category created successfully", category)
 }
 
+// @Summary Get categories
+// @Description Get categories
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Success 200 {object} utils.Response{data=dto.CategoryResponse} "Categories fetched successfully"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/categories [get]
 func (h *productHandler) GetCategories(c *gin.Context) {
 	categories, err := h.pd.GetCategories()
 	if err != nil {
@@ -71,6 +91,18 @@ func (h *productHandler) GetCategories(c *gin.Context) {
 	utils.SuccessResponse(c, "Categories fetched successfully", categories)
 }
 
+// @Summary Update category
+// @Description Update category
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path uint true "Category ID"
+// @Param request body dto.UpdateCategoryRequest true "Category data"
+// @Success 200 {object} utils.Response{data=dto.CategoryResponse} "Category updated successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/categories/{id} [put]
 func (h *productHandler) UpdateCategory(c *gin.Context) {
 	categoryID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -93,6 +125,14 @@ func (h *productHandler) UpdateCategory(c *gin.Context) {
 	utils.SuccessResponse(c, "Category updated successfully", category)
 }
 
+// @Summary Delete category
+// @Description Delete category
+// @Tags Products
+// @Security BearerAuth
+// @Param id path uint true "Category ID"
+// @Success 200 {object} utils.Response "Category deleted successfully"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/categories/{id} [delete]
 func (h *productHandler) DeleteCategory(c *gin.Context) {
 	categoryID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -109,6 +149,18 @@ func (h *productHandler) DeleteCategory(c *gin.Context) {
 }
 
 // Product
+
+// @Summary Create product
+// @Description Create product
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.CreateProductRequest true "Product data"
+// @Success 201 {object} utils.Response{data=dto.ProductResponse} "Product created successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products [post]
 func (h *productHandler) CreateProduct(c *gin.Context) {
 	var req dto.CreateProductRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -125,6 +177,13 @@ func (h *productHandler) CreateProduct(c *gin.Context) {
 	utils.SuccessResponse(c, "Product created successfully", product)
 }
 
+// @Summary Get products
+// @Description Get products
+// @Tags Products
+// @Produce json
+// @Success 200 {object} utils.Response{data=dto.ProductResponse} "Products fetched successfully"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products [get]
 func (h *productHandler) GetProducts(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
@@ -141,6 +200,17 @@ func (h *productHandler) GetProducts(c *gin.Context) {
 	})
 }
 
+// @Summary Get product by ID
+// @Description Get product by ID
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path uint true "Product ID"
+// @Success 200 {object} utils.Response{data=dto.ProductResponse} "Product fetched successfully"
+// @Failure 404 {object} utils.Response "Product not found"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/{id} [get]
 func (h *productHandler) GetProductById(c *gin.Context) {
 	productID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -157,6 +227,18 @@ func (h *productHandler) GetProductById(c *gin.Context) {
 	utils.SuccessResponse(c, "Product fetched successfully", product)
 }
 
+// @Summary Update product
+// @Description Update product
+// @Tags Products
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path uint true "Product ID"
+// @Param request body dto.UpdateProductRequest true "Product data"
+// @Success 200 {object} utils.Response{data=dto.ProductResponse} "Product updated successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/{id} [put]
 func (h *productHandler) UpdateProduct(c *gin.Context) {
 	productID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -179,6 +261,14 @@ func (h *productHandler) UpdateProduct(c *gin.Context) {
 	utils.SuccessResponse(c, "Product updated successfully", product)
 }
 
+// @Summary Delete product
+// @Description Delete product
+// @Tags Products
+// @Security BearerAuth
+// @Param id path uint true "Product ID"
+// @Success 200 {object} utils.Response "Product deleted successfully"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/{id} [delete]
 func (h *productHandler) DeleteProduct(c *gin.Context) {
 	productID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -194,6 +284,17 @@ func (h *productHandler) DeleteProduct(c *gin.Context) {
 	utils.SuccessResponse(c, "Product deleted successfully", nil)
 }
 
+// @Summary Upload product image
+// @Description Upload product image
+// @Tags Products
+// @Accept multipart/form-data
+// @Security BearerAuth
+// @Param id path uint true "Product ID"
+// @Param image formData file true "Image"
+// @Success 200 {object} utils.Response "Image uploaded successfully"
+// @Failure 400 {object} utils.Response "Invalid request data"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /products/{id}/image [post]
 func (h *productHandler) UploadProductImage(c *gin.Context) {
 	productID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {

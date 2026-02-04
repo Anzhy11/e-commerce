@@ -1,0 +1,1011 @@
+basePath: /api/v1
+definitions:
+  github_com_anzhy11_go-e-commerce_internal_dto.AddToCartRequest:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - product_id
+    - quantity
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.AuthResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.UserResponse'
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.CartItemResponse:
+    properties:
+      id:
+        type: integer
+      product:
+        $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.ProductResponse'
+      quantity:
+        type: integer
+      subtotal:
+        type: number
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.CartResponse:
+    properties:
+      cart_items:
+        items:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CartItemResponse'
+        type: array
+      id:
+        type: integer
+      total:
+        type: number
+      user_id:
+        type: integer
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.CategoryResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.CreateCategoryRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.CreateProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+    required:
+    - category_id
+    - description
+    - name
+    - price
+    - sku
+    - stock
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.OrderItemResponse:
+    properties:
+      id:
+        type: integer
+      price:
+        type: number
+      product:
+        $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.ProductResponse'
+      quantity:
+        type: integer
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.OrderResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      order_items:
+        items:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.OrderItemResponse'
+        type: array
+      status:
+        type: string
+      total_amount:
+        type: number
+      user_id:
+        type: integer
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.ProductImageResponse:
+    properties:
+      alt_text:
+        type: string
+      id:
+        type: integer
+      is_primary:
+        type: boolean
+      url:
+        type: string
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.ProductResponse:
+    properties:
+      category:
+        $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CategoryResponse'
+      category_id:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      images:
+        items:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.ProductImageResponse'
+        type: array
+      is_active:
+        type: boolean
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.UpdateCartRequest:
+    properties:
+      quantity:
+        type: integer
+    required:
+    - quantity
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.UpdateCategoryRequest:
+    properties:
+      description:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.UpdateProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.UpdateProfileRequest:
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_dto.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      last_name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    type: object
+  github_com_anzhy11_go-e-commerce_internal_utils.Response:
+    properties:
+      data: {}
+      error:
+        type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: codemastery.web@gmail.com
+    name: Ahmed Adebayo
+    url: http://linkedin.com/in/anzhy11
+  description: A modern e-commerce API built with Go, Gin, and GORM
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: E-Commerce API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user with email and password
+      parameters:
+      - description: User login data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User logged in successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.AuthResponse'
+              type: object
+        "400":
+          description: Invalid request data or user not found
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      summary: Login user
+      tags:
+      - Authentication
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout user by revoking refresh token
+      parameters:
+      - description: Refresh token data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User logged out successfully
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      summary: Logout user
+      tags:
+      - Authentication
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh access token using refresh token
+      parameters:
+      - description: Refresh token data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token refreshed successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.AuthResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      summary: Refresh token
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email and password
+      parameters:
+      - description: User registration data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.AuthResponse'
+              type: object
+        "400":
+          description: Invalid request data or user already exists
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      summary: Register a new user
+      tags:
+      - Authentication
+  /cart:
+    post:
+      consumes:
+      - application/json
+      description: Add item to cart
+      parameters:
+      - description: Cart data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.AddToCartRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Item added to cart successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CartResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Add item to cart
+      tags:
+      - Cart
+  /cart/{id}:
+    delete:
+      description: Remove item from cart
+      parameters:
+      - description: Cart item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Item removed from cart successfully
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Remove item from cart
+      tags:
+      - Cart
+    put:
+      consumes:
+      - application/json
+      description: Update cart item
+      parameters:
+      - description: Cart item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Cart data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.UpdateCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart item updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CartResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update cart item
+      tags:
+      - Cart
+  /cart/{user_id}:
+    get:
+      description: Get cart by user ID
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CartResponse'
+              type: object
+        "404":
+          description: Cart not found
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get cart by user ID
+      tags:
+      - Cart
+  /orders:
+    get:
+      description: Get orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Orders fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.OrderResponse'
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get orders
+      tags:
+      - Orders
+    post:
+      description: Create order
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Order created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.OrderResponse'
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Create order
+      tags:
+      - Orders
+  /orders/{id}:
+    get:
+      description: Get order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.OrderResponse'
+              type: object
+        "404":
+          description: Order not found
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get order
+      tags:
+      - Orders
+  /products:
+    get:
+      description: Get products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.ProductResponse'
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      summary: Get products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Create product
+      parameters:
+      - description: Product data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.ProductResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Create product
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      description: Delete product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Product deleted successfully
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete product
+      tags:
+      - Products
+    get:
+      consumes:
+      - application/json
+      description: Get product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.ProductResponse'
+              type: object
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get product by ID
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.ProductResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update product
+      tags:
+      - Products
+  /products/{id}/image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload product image
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Image
+        in: formData
+        name: image
+        required: true
+        type: file
+      responses:
+        "200":
+          description: Image uploaded successfully
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Upload product image
+      tags:
+      - Products
+  /products/categories:
+    get:
+      consumes:
+      - application/json
+      description: Get categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Categories fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CategoryResponse'
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      summary: Get categories
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Create category
+      parameters:
+      - description: Category data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Category created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CategoryResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Create category
+      tags:
+      - Products
+  /products/categories/{id}:
+    delete:
+      description: Delete category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Category deleted successfully
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete category
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.CategoryResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update category
+      tags:
+      - Products
+  /users/profile:
+    get:
+      description: Get user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.UserResponse'
+              type: object
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update user profile
+      parameters:
+      - description: User data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_dto.UserResponse'
+              type: object
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/github_com_anzhy11_go-e-commerce_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

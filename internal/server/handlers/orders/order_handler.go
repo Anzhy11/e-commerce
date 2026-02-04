@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	_ "github.com/anzhy11/go-e-commerce/internal/dto"
 	orderService "github.com/anzhy11/go-e-commerce/internal/services/orders"
 	"github.com/anzhy11/go-e-commerce/internal/utils"
 	"gorm.io/gorm"
@@ -26,6 +27,14 @@ func New(db *gorm.DB) OrderHandlerInterface {
 	}
 }
 
+// @Summary Create order
+// @Description Create order
+// @Tags Orders
+// @Produce json
+// @Security BearerAuth
+// @Success 201 {object} utils.Response{data=dto.OrderResponse} "Order created successfully"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /orders [post]
 func (h *orderHandler) CreateOrder(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -38,6 +47,14 @@ func (h *orderHandler) CreateOrder(c *gin.Context) {
 	utils.SuccessResponse(c, "Order created successfully", orderResponse)
 }
 
+// @Summary Get orders
+// @Description Get orders
+// @Tags Orders
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} utils.Response{data=dto.OrderResponse} "Orders fetched successfully"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /orders [get]
 func (h *orderHandler) GetOrders(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -56,6 +73,16 @@ func (h *orderHandler) GetOrders(c *gin.Context) {
 	})
 }
 
+// @Summary Get order
+// @Description Get order
+// @Tags Orders
+// @Produce json
+// @Security BearerAuth
+// @Param id path uint true "Order ID"
+// @Success 200 {object} utils.Response{data=dto.OrderResponse} "Order fetched successfully"
+// @Failure 404 {object} utils.Response "Order not found"
+// @Failure 500 {object} utils.Response "Internal server error"
+// @Router /orders/{id} [get]
 func (h *orderHandler) GetOrder(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
