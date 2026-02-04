@@ -11,6 +11,7 @@ import (
 	"github.com/anzhy11/go-e-commerce/internal/dto"
 	"github.com/anzhy11/go-e-commerce/internal/events"
 	"github.com/anzhy11/go-e-commerce/internal/models"
+	"github.com/anzhy11/go-e-commerce/internal/notifications"
 	"github.com/anzhy11/go-e-commerce/internal/repository"
 	"github.com/anzhy11/go-e-commerce/internal/utils"
 	"github.com/anzhy11/go-e-commerce/pkg/encryption"
@@ -155,7 +156,7 @@ func (s *authService) generateAuthResponse(user *models.User) (*dto.AuthResponse
 		return nil, rtErr
 	}
 
-	err = s.eventPub.Publish("USER_LOGGED_IN", user, map[string]string{})
+	err = s.eventPub.Publish(notifications.UserLoggedInEventType, user, map[string]string{})
 	if err != nil {
 		return nil, fmt.Errorf("failed to publish user logged in event: %w", err)
 	}

@@ -34,3 +34,6 @@ uploads/
 
 # vendor
 vendor/
+
+# docker
+docker/data/

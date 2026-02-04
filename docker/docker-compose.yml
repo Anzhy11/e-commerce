@@ -10,6 +10,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:latest
@@ -18,9 +23,9 @@ services:
       - "8081:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ../uploads:/var/www/uploads
+      - ../uploads:/uploads
     depends_on:
-      - localstack
+      - api
 
   localstack:
     image: localstack/localstack:latest
@@ -31,10 +36,15 @@ services:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_DEFAULT_REGION=us-east-1
-      - SERVICES=s3, sqs
+      - SERVICES=s3,sqs
     volumes:
       - localstack_data:/var/lib/localstack
       - ./init/aws/init.localstack.sh:/etc/localstack/init/ready.d/init.sh
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4566/_localstack/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   mailpit:
     image: axllent/mailpit:v1.27
@@ -59,8 +69,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
-      - localstack
+      postgres:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
@@ -72,38 +84,39 @@ services:
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_REGION=us-east-1
       - AWS_S3_BUCKET=ecommerce-uploads
-      - AWS_S3_ENDPOINT=http://localhost:4566
-      - AWS_SQS_QUEUE_URL=http://localhost:4566/000000000000/ecommerce-events
+      - AWS_S3_ENDPOINT=http://localstack:4566
+      - AWS_SQS_QUEUE_URL=http://localstack:4566/000000000000/ecommerce-events
       - AWS_EVENT_QUEUE_NAME=ecommerce-events
       - JWT_SECRET=secret
       - JWT_EXPIRES_IN=24h
       - REFRESH_TOKEN_EXPIRES_IN=72h
       - MAX_UPLOAD_SIZE=10485760
-      - UPLOAD_PATH=./uploads
+      - UPLOAD_PATH=/uploads
       - UPLOAD_PROVIDER=local
-      - SMTP_HOST=localhost
+      - SMTP_HOST=mailpit
       - SMTP_PORT=1025
       - SMTP_USERNAME=
       - SMTP_PASSWORD=
       - SMTP_FROM=anzhy@anzhy.com
     command: [ "./api" ]
+    volumes:
+      - ../uploads:/uploads
 
   notifier:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     container_name: notifier
-    ports:
-      - "8082:8082"
     depends_on:
-      - localstack
+      localstack:
+        condition: service_healthy
     environment:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_REGION=us-east-1
       - AWS_S3_BUCKET=ecommerce-uploads
-      - AWS_S3_ENDPOINT=http://localhost:4566
-      - AWS_SQS_QUEUE_URL=http://localhost:4566/000000000000/ecommerce-events
+      - AWS_S3_ENDPOINT=http://localstack:4566
+      - AWS_SQS_QUEUE_URL=http://localstack:4566/000000000000/ecommerce-events
       - AWS_EVENT_QUEUE_NAME=ecommerce-events
       - SMTP_HOST=mailpit
       - SMTP_PORT=1025
